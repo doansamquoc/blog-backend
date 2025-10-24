@@ -45,9 +45,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse signIn(SignInRequest request, HttpServletRequest servletRequest, HttpServletResponse response) {
+    public AuthResponse signIn(SignInRequest r, HttpServletRequest request, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                request.getIdentifier(), request.getPassword()
+                r.getIdentifier(), r.getPassword()
         );
 
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
@@ -59,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
         claims.put("roles", user.getRoles().stream().map(Enum::name).toList());
 
         String accessToken = jwtService.generate(claims, user.getUsername());
-        RefreshToken refreshToken = refreshTokenService.generate(user, servletRequest);
+        RefreshToken refreshToken = refreshTokenService.generate(user, request);
 
         // Create cookie
         ResponseCookie refreshCookie = cookieUtils.createRefreshTokenCookie(refreshToken.getToken());
