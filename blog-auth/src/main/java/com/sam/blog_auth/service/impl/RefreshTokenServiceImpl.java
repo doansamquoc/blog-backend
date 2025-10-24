@@ -38,4 +38,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken token) {
         return null;
     }
+
+    @Override
+    public void revoke(String token) {
+        refreshTokenRepository.findByToken(token).ifPresent(refreshToken -> {
+            refreshToken.setRevoked(true);
+            refreshTokenRepository.save(refreshToken);
+        });
+    }
+
+    @Override
+    public void revokeAllByUser(User user) {
+
+    }
 }

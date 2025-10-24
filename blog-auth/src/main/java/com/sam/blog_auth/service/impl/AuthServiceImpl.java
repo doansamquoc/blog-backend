@@ -14,7 +14,6 @@ import com.sam.blog_core.exception.BusinessException;
 import com.sam.blog_core.service.JwtService;
 import com.sam.blog_core.utils.CookieUtils;
 import com.sam.blog_user.entity.User;
-import com.sam.blog_user.mapper.UserMapper;
 import com.sam.blog_user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +21,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -98,5 +99,25 @@ public class AuthServiceImpl implements AuthService {
         cookieUtils.addCookieToHeader(response, refreshCookie);
 
         return AuthResponse.builder().accessToken(accessToken).tokenType(TokenType.BEARER).build();
+    }
+
+    @Override
+    public void signOut(HttpServletRequest request, HttpServletResponse response) {
+        // Check authenticate
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
+//            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
+
+        // Check refresh token in the request
+        String refreshToken = cookieUtils.extractRefreshTokenFromRequest(request);
+        if (refreshToken == null || refreshToken.isBlank())
+            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
+
+        // Revoke refresh token in database
+        refreshTokenService.revoke(refreshToken);
+
+        // Clear refresh token in cookie
+        ResponseCookie clearCookie = cookieUtils.deleteCookie("refreshToken", "/api/auth");
+        cookieUtils.addCookieToHeader(response, clearCookie);
     }
 }

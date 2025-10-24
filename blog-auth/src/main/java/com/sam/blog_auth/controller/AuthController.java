@@ -44,4 +44,10 @@ public class AuthController {
         AuthResponse authResponse = authService.signIn(request, servletRequest, response);
         return ApiResponseFactory.success(authResponse, "Sign in successfully");
     }
+
+    @PostMapping("/sign-out")
+    public ResponseEntity<ApiResponse<Object>> signOut(HttpServletRequest request, HttpServletResponse response) {
+        authService.signOut(request, response);
+        return ApiResponseFactory.success("Sign out successfully");
+    }
 }

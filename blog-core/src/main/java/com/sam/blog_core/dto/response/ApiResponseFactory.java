@@ -17,6 +17,17 @@ public class ApiResponseFactory {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+    public static <T> ResponseEntity<ApiResponse<T>> success(String message) {
+        ApiResponse<T> apiResponse = ApiResponse.<T>builder()
+                .success(true)
+                .status(HttpStatus.OK.value())
+                .message(message)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
     public static <T> ResponseEntity<ApiResponse<T>> created(T data, String message) {
         ApiResponse<T> apiResponse = ApiResponse.<T>builder()
                 .success(true)
