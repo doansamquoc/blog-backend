@@ -8,6 +8,7 @@ import com.sam.blog_core.dto.response.ApiResponse;
 import com.sam.blog_core.dto.response.ApiResponseFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,10 +27,11 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<AuthResponse>> signUp(
-            @RequestBody SignUpRequest request,
+            @RequestBody @Valid SignUpRequest r,
+            HttpServletRequest request,
             HttpServletResponse response
     ) {
-        AuthResponse authResponse = authService.signUp(request, response);
+        AuthResponse authResponse = authService.signUp(r, request, response);
         return ApiResponseFactory.created(authResponse, "Sign up successfully");
     }
 

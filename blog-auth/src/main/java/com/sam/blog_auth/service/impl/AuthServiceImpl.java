@@ -7,10 +7,14 @@ import com.sam.blog_auth.entity.RefreshToken;
 import com.sam.blog_auth.mapper.AuthMapper;
 import com.sam.blog_auth.service.AuthService;
 import com.sam.blog_auth.service.RefreshTokenService;
+import com.sam.blog_core.enums.ErrorCode;
+import com.sam.blog_core.enums.Role;
 import com.sam.blog_core.enums.TokenType;
+import com.sam.blog_core.exception.BusinessException;
 import com.sam.blog_core.service.JwtService;
 import com.sam.blog_core.utils.CookieUtils;
 import com.sam.blog_user.entity.User;
+import com.sam.blog_user.mapper.UserMapper;
 import com.sam.blog_user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +29,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -40,8 +46,32 @@ public class AuthServiceImpl implements AuthService {
     AuthenticationManager authenticationManager;
 
     @Override
-    public AuthResponse signUp(SignUpRequest request, HttpServletResponse response) {
-        return null;
+    public AuthResponse signUp(SignUpRequest r, HttpServletRequest request, HttpServletResponse response) {
+        if (userRepository.existsByEmailAddress(r.getEmailAddress()))
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
+
+        if (userRepository.existsByUsername(r.getUsername()))
+            throw new BusinessException(ErrorCode.USERNAME_ALREADY_EXISTS);
+
+        User user = authMapper.toSIgnUpRequest(r);
+
+        // Initializing role
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+
+        // Set role
+        user.setRoles(roles);
+
+        // Hashing password
+        String hashedPassword = passwordEncoder.encode(r.getPassword());
+
+        // Hashed password
+        user.setHashedPassword(hashedPassword);
+
+        userRepository.save(user);
+
+        // Sign in to response access token and generate refresh token
+        return signIn(new SignInRequest(r.getUsername(), r.getPassword()), request, response);
     }
 
     @Override
