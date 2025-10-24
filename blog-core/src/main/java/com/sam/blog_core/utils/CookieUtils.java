@@ -21,6 +21,18 @@ import java.util.Optional;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CookieUtils {
 
+    private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
+
+    public String extractRefreshTokenFromRequest(HttpServletRequest request) {
+        log.info(Arrays.toString(request.getCookies()));
+        if (request.getCookies() == null) return null;
+        for (Cookie cookie : request.getCookies()) {
+            if (REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
+                return cookie.getValue();
+        }
+        return null;
+    }
+
     public ResponseCookie createCookie(String name, String value, long maxAge, String path) {
         return ResponseCookie.from(name, value)
                 .httpOnly(false)
@@ -42,7 +54,7 @@ public class CookieUtils {
     public ResponseCookie createRefreshTokenCookie(String value) {
         // 15 days
         long refreshTokenExpiration = 15 * 24 * 60 * 60 * 1000;
-        return createCookie("refreshToken", value, refreshTokenExpiration / 1000, "/api/auth/refresh");
+        return createCookie("refreshToken", value, refreshTokenExpiration / 1000, "/api/auth");
     }
 
     public ResponseCookie deleteCookie(String name, String path) {
