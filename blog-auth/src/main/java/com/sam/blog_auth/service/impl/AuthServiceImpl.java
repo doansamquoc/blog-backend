@@ -5,6 +5,7 @@ import com.sam.blog_auth.dto.request.SignUpRequest;
 import com.sam.blog_auth.dto.response.AuthResponse;
 import com.sam.blog_auth.entity.RefreshToken;
 import com.sam.blog_auth.mapper.AuthMapper;
+import com.sam.blog_auth.repository.RefreshTokenRepository;
 import com.sam.blog_auth.service.AuthService;
 import com.sam.blog_auth.service.RefreshTokenService;
 import com.sam.blog_core.enums.ErrorCode;
@@ -15,6 +16,7 @@ import com.sam.blog_core.service.JwtService;
 import com.sam.blog_core.utils.CookieUtils;
 import com.sam.blog_user.entity.User;
 import com.sam.blog_user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
@@ -45,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder passwordEncoder;
     RefreshTokenService refreshTokenService;
     AuthenticationManager authenticationManager;
+    RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public AuthResponse signUp(SignUpRequest r, HttpServletRequest request, HttpServletResponse response) {
@@ -98,15 +101,15 @@ public class AuthServiceImpl implements AuthService {
         // Add cookie to header
         cookieUtils.addCookieToHeader(response, refreshCookie);
 
-        return AuthResponse.builder().accessToken(accessToken).tokenType(TokenType.BEARER).build();
+        return AuthResponse.builder().accessToken(accessToken).tokenType(TokenType.BEARER.getName()).build();
     }
 
     @Override
     public void signOut(HttpServletRequest request, HttpServletResponse response) {
         // Check authenticate
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
-//            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
+            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
 
         // Check refresh token in the request
         String refreshToken = cookieUtils.extractRefreshTokenFromRequest(request);
@@ -119,5 +122,25 @@ public class AuthServiceImpl implements AuthService {
         // Clear refresh token in cookie
         ResponseCookie clearCookie = cookieUtils.deleteCookie("refreshToken", "/api/auth");
         cookieUtils.addCookieToHeader(response, clearCookie);
+    }
+
+    @Override
+    public AuthResponse refresh(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = cookieUtils.getCookie(request, "refreshToken").orElseThrow(
+                () -> new BusinessException(ErrorCode.INVALID_TOKEN)
+        );
+
+        String refreshTokenValue = cookie.getValue();
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenValue).orElseThrow(
+                () -> new BusinessException(ErrorCode.INVALID_TOKEN)
+        );
+
+        User user = refreshToken.getUser();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
+        claims.put("roles", user.getRoles().stream().map(Enum::name).toList());
+        String newAccessToken = jwtService.generate(claims, user.getUsername());
+
+        return AuthResponse.builder().accessToken(newAccessToken).tokenType(TokenType.BEARER.getName()).build();
     }
 }
