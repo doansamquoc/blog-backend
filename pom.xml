@@ -30,7 +30,6 @@
         <module>blog-core</module>
         <module>blog-user</module>
         <module>blog-auth</module>
-        <module>blog-security</module>
     </modules>
 
     <build>

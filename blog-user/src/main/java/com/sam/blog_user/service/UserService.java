@@ -1,5 +1,7 @@
 package com.sam.blog_user.service;
 
-public interface UserService {
+import com.sam.blog_user.dto.response.UserResponse;
 
+public interface UserService {
+    UserResponse me();
 }
