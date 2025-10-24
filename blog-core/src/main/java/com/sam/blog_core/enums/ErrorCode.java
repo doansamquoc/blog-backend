@@ -20,13 +20,21 @@ public enum ErrorCode {
     USERNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "Username already exists"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
     MISSING_FIELD(HttpStatus.BAD_REQUEST, "Missing field"),
+
     INVALID_EMAIL_ADDRESS(HttpStatus.BAD_REQUEST, "Invalid email address"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "The password must have at least 8 characters"),
     INVALID_USERNAME(HttpStatus.BAD_REQUEST,"Username must be between 4 and 16 characters"),
-    INVALID_FIRSTNAME(HttpStatus.BAD_REQUEST, "First name must be between 4 and 54 characters"),
-    INVALID_LASTNAME(HttpStatus.BAD_REQUEST, "Last name must be between 4 and 54 characters"),
+    INVALID_FIRST_NAME(HttpStatus.BAD_REQUEST, "First name must be between 4 and 54 characters"),
+    INVALID_LAST_NAME(HttpStatus.BAD_REQUEST, "Last name must be between 4 and 54 characters"),
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "Gender cannot be left blank"),
-    INVALID_ROLE(HttpStatus.BAD_REQUEST, "Role cannot be left blank");
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "Role cannot be left blank"),
+
+    EMAIL_ADDRESS_REQUIRED(HttpStatus.BAD_REQUEST, "Email address required"),
+    PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "Password is required"),
+    FIRST_NAME_REQUIRED(HttpStatus.BAD_REQUEST, "First name is required"),
+    DOB_REQUIRED(HttpStatus.BAD_REQUEST, "Date of birth is required"),
+    DOB_MUST_BE_IN_THE_PAST(HttpStatus.BAD_REQUEST, "Date of birth must be in the past");
+
     HttpStatus status;
     String message;
 }
