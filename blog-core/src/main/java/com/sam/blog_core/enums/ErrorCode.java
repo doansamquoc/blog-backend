@@ -19,7 +19,14 @@ public enum ErrorCode {
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "Invalid email or password"),
     USERNAME_ALREADY_EXISTS(HttpStatus.CONFLICT, "Username already exists"),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error"),
-    MISSING_FIELD(HttpStatus.BAD_REQUEST, "Missing field");
+    MISSING_FIELD(HttpStatus.BAD_REQUEST, "Missing field"),
+    INVALID_EMAIL_ADDRESS(HttpStatus.BAD_REQUEST, "Invalid email address"),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "The password must have at least 8 characters"),
+    INVALID_USERNAME(HttpStatus.BAD_REQUEST,"Username must be between 4 and 16 characters"),
+    INVALID_FIRSTNAME(HttpStatus.BAD_REQUEST, "First name must be between 4 and 54 characters"),
+    INVALID_LASTNAME(HttpStatus.BAD_REQUEST, "Last name must be between 4 and 54 characters"),
+    INVALID_GENDER(HttpStatus.BAD_REQUEST, "Gender cannot be left blank"),
+    INVALID_ROLE(HttpStatus.BAD_REQUEST, "Role cannot be left blank");
     HttpStatus status;
     String message;
 }
