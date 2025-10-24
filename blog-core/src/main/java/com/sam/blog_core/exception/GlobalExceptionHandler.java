@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Objects;
+
 import static com.sam.blog_core.dto.response.ApiResponseFactory.error;
 
 @ControllerAdvice
@@ -19,10 +21,13 @@ public class GlobalExceptionHandler {
         return ApiResponseFactory.error(code, r.getServletPath());
     }
 
+    /**
+     * enumKey contained the error code defined in ErrorCode
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handleValidation(MethodArgumentNotValidException e, HttpServletRequest r) {
-        String message = e.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-        ErrorCode code = ErrorCode.MISSING_FIELD;
+        String enumKey = Objects.requireNonNull(e.getFieldError()).getDefaultMessage();
+        ErrorCode code = ErrorCode.valueOf(enumKey);
         return ApiResponseFactory.error(code, r.getServletPath());
     }
 
