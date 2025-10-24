@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ApiResponse<T> {
     boolean success;
     int status;
+    String errorCode;
     String message;
     T data;
     String path;

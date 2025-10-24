@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     String hashedPassword;
 
     @Column(name = "date_of_birth")
-    LocalDateTime dateOfBirth;
+    LocalDate dateOfBirth;
 
     @Column(name = "gender", length = 6)
     Gender gender;
