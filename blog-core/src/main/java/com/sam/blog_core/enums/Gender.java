@@ -1,4 +1,4 @@
-package com.sam.blog_user.enums;
+package com.sam.blog_core.enums;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

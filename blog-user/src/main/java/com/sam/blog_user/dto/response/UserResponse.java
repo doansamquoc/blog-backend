@@ -1,8 +1,8 @@
 package com.sam.blog_user.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.sam.blog_user.enums.Gender;
-import com.sam.blog_user.enums.Role;
+import com.sam.blog_core.enums.Gender;
+import com.sam.blog_core.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

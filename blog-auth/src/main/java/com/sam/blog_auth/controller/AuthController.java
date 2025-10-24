@@ -1,0 +1,45 @@
+package com.sam.blog_auth.controller;
+
+import com.sam.blog_auth.dto.request.SignInRequest;
+import com.sam.blog_auth.dto.request.SignUpRequest;
+import com.sam.blog_auth.dto.response.AuthResponse;
+import com.sam.blog_auth.service.AuthService;
+import com.sam.blog_core.dto.response.ApiResponse;
+import com.sam.blog_core.dto.response.ApiResponseFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/auth")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class AuthController {
+    AuthService authService;
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<ApiResponse<AuthResponse>> signUp(
+            @RequestBody SignUpRequest request,
+            HttpServletResponse response
+    ) {
+        AuthResponse authResponse = authService.signUp(request, response);
+        return ApiResponseFactory.created(authResponse, "Sign up successfully");
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<ApiResponse<AuthResponse>> signIn(
+            @RequestBody SignInRequest request,
+            HttpServletRequest servletRequest,
+            HttpServletResponse response
+    ) {
+        AuthResponse authResponse = authService.signIn(request, servletRequest, response);
+        return ApiResponseFactory.success(authResponse, "Sign in successfully");
+    }
+}

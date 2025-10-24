@@ -1,6 +1,6 @@
-package com.sam.blog_user.dto.request;
+package com.sam.blog_auth.dto.request;
 
-import com.sam.blog_user.enums.Gender;
+import com.sam.blog_core.enums.Gender;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 /*
  * The error message must be contained the num key defined in ErrorCode
  */
-public class UserCreationRequest {
+public class SignUpRequest {
     @NotBlank(message = "EMAIL_ADDRESS_REQUIRED")
     @Email(message = "INVALID_EMAIL_ADDRESS")
     String emailAddress;
