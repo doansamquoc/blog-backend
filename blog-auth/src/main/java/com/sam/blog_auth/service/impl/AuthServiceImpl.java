@@ -104,9 +104,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void signOut(HttpServletRequest request, HttpServletResponse response) {
         // Check authenticate
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
-//            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
+            throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
 
         // Check refresh token in the request
         String refreshToken = cookieUtils.extractRefreshTokenFromRequest(request);
