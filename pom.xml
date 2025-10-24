@@ -28,6 +28,7 @@
     <modules>
         <module>blog-app</module>
         <module>blog-core</module>
+        <module>blog-user</module>
     </modules>
 
     <build>
