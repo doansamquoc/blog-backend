@@ -33,8 +33,9 @@ public enum ErrorCode {
     PASSWORD_REQUIRED(HttpStatus.BAD_REQUEST, "Password is required"),
     FIRST_NAME_REQUIRED(HttpStatus.BAD_REQUEST, "First name is required"),
     DOB_REQUIRED(HttpStatus.BAD_REQUEST, "Date of birth is required"),
-    DOB_MUST_BE_IN_THE_PAST(HttpStatus.BAD_REQUEST, "Date of birth must be in the past");
+    DOB_MUST_BE_IN_THE_PAST(HttpStatus.BAD_REQUEST, "Date of birth must be in the past"),
 
+    SEND_MAIL_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "Send mail error");
     HttpStatus status;
     String message;
 }
