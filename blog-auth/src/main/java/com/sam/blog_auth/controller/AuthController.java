@@ -13,10 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +46,14 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Object>> signOut(HttpServletRequest request, HttpServletResponse response) {
         authService.signOut(request, response);
         return ApiResponseFactory.success("Sign out successfully");
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<ApiResponse<AuthResponse>> refresh(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        AuthResponse authResponse = authService.refresh(request, response);
+        return ApiResponseFactory.success(authResponse, "Request new access token successfully");
     }
 }

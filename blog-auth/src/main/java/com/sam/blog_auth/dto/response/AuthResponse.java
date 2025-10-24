@@ -11,5 +11,5 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class AuthResponse {
     String accessToken;
-    TokenType tokenType;
+    String tokenType;
 }
