@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,6 +46,12 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "email_address", unique = true, nullable = false)
     String emailAddress;
+
+    @Column(name="avatar_url")
+    String avatarUrl;
+
+    @Column(name = "is_verified")
+    boolean isVerified;
 
     @Column(name = "roles", length = 6)
     Set<Role> roles;
