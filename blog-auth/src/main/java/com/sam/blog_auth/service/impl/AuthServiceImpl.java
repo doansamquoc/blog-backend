@@ -72,6 +72,9 @@ public class AuthServiceImpl implements AuthService {
         // Hashed password
         user.setHashedPassword(hashedPassword);
 
+        // Verified false
+        user.setVerified(false);
+
         userRepository.save(user);
 
         // Sign in to response access token and generate refresh token
@@ -126,14 +129,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse refresh(HttpServletRequest request, HttpServletResponse response) {
-        Cookie cookie = cookieUtils.getCookie(request, "refreshToken").orElseThrow(
-                () -> new BusinessException(ErrorCode.INVALID_TOKEN)
-        );
+        Cookie cookie = cookieUtils.getCookie(request, "refreshToken")
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_TOKEN));
 
         String refreshTokenValue = cookie.getValue();
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenValue).orElseThrow(
-                () -> new BusinessException(ErrorCode.INVALID_TOKEN)
-        );
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenValue)
+                .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_TOKEN));
 
         User user = refreshToken.getUser();
         Map<String, Object> claims = new HashMap<>();
