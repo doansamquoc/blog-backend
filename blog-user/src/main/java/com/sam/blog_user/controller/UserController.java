@@ -30,4 +30,9 @@ public class UserController {
         userService.updatePassword(r, request);
         return ApiResponseFactory.success("Your password has been changed");
     }
+
+    @GetMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Object>> resetPassword(@RequestParam("token") String token) {
+        return null;
+    }
 }

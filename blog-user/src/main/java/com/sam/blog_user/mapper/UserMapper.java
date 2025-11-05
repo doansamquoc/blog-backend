@@ -1,5 +1,6 @@
 package com.sam.blog_user.mapper;
 
+import com.sam.blog_user.dto.request.ForgetPasswordRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
 import com.sam.blog_user.entity.User;
@@ -11,4 +12,5 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
     UserResponse toUserResponse(User user);
     User toUserUpdateRequest(UserUpdateRequest request, @MappingTarget User user);
+    User toForgetPasswordRequest(ForgetPasswordRequest request);
 }
