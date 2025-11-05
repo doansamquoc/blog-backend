@@ -5,14 +5,22 @@ import com.sam.blog_core.exception.BusinessException;
 import com.sam.blog_mailer.dto.request.MailRequest;
 import com.sam.blog_mailer.mapper.SimpleMailMessageMapper;
 import com.sam.blog_mailer.service.MailService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.mail.MailException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Date;
 
@@ -21,51 +29,29 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MailServiceImpl implements MailService {
     JavaMailSender mailSender;
-    SimpleMailMessageMapper mapper;
+    SpringTemplateEngine templateEngine;
 
     @Override
     public void sendHTMLMail(MailRequest r, HttpServletRequest request) {
-        String resetLink = "https://localhost:8080";
-
-        String htmlContent = """
-        <html>
-           <body style="display: flex; flex-direction: column; align-items: center; background: #b7ccf5;">
-               <h2 style="text-align: center;">Your password has been changed!</h2>
-               <p>If this wasn't you, please reset your password immediately.</p>
-               <a href="http://localhost:8080"
-                   style=" display:inline-block;padding:10px 20px;background-color:#007BFF;color:#ffffff;text-decoration:none;border-radius:5px;">
-                   Reset password now</a>
-               <hr>
-               <h4>IP: 127.0.0.1</h4>
-               <h4>Device: Iphone 17 Pro Max</h4>
-               <h4>Time: 22/12/2024 15:00:32</h4>
-           </body>
-               </html>
-        """.formatted(resetLink);
         try {
             String clientIp = request.getRemoteAddr();
             String userAgent = request.getHeader("User-Agent");
 
-            String fullBody = """
-                %s
+            Context context = new Context();
+            context.setVariable("ip", clientIp);
+            context.setVariable("userAgent", userAgent);
+            context.setVariable("time", new Date());
+            context.setVariable("username", r.getTo());
 
-                ---
-                Sent from: %s
-                User-Agent: %s
-                Time: %s
-                """.formatted(
-                    r.getText(),
-                    clientIp,
-                    userAgent,
-                    new Date()
-            );
+            String htmlContent = templateEngine.process("password-changed", context);
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(r.getTo());
+            helper.setSubject(r.getSubject());
+            helper.setText(htmlContent, true);
 
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(r.getTo());
-            message.setSubject(r.getSubject());
-            message.setText(fullBody);
             mailSender.send(message);
-        } catch (MailSendException e) {
+        } catch (MailException | MessagingException exception) {
             throw new BusinessException(ErrorCode.SEND_MAIL_ERROR);
         }
     }

@@ -1,9 +1,9 @@
 package com.sam.blog_user.service.impl;
 
-import com.sam.blog_mailer.dto.request.MailRequest;
-import com.sam.blog_mailer.service.MailService;
+import com.sam.blog_core.service.JwtService;
 import com.sam.blog_core.enums.ErrorCode;
 import com.sam.blog_core.exception.BusinessException;
+import com.sam.blog_user.dto.request.ForgetPasswordRequest;
 import com.sam.blog_user.dto.request.UserUpdatePasswordRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,6 +33,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     ApplicationEventPublisher eventPublisher;
+    JwtService jwtService;
 
     @Override
     public UserResponse me() {
@@ -74,5 +74,13 @@ public class UserServiceImpl implements UserService {
 
         PasswordChangedEvent event = new PasswordChangedEvent(this, userSaved.getEmailAddress(), request);
         eventPublisher.publishEvent(event);
+    }
+
+    public void resetPassword(String token) {
+
+    }
+
+    public void forgetPassword(ForgetPasswordRequest r, HttpServletRequest request) {
+
     }
 }
