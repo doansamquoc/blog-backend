@@ -24,6 +24,6 @@ public class PasswordChangedListener {
         mailRequest.setSubject("UPDATE PASSWORD");
         mailRequest.setText("Your password has been changed!");
 
-        mailService.sendTextMail(mailRequest, event.getRequest());
+        mailService.sendHTMLMail(mailRequest, event.getRequest());
     }
 }
