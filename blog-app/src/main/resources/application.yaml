@@ -3,9 +3,9 @@ spring:
     name: blog
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/blog
-    username: postgres
-    password: 26052004
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/blog}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:26052004}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -20,11 +20,17 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: doansamquoc@gmail.com
-    password: vifydaybatwlxljc
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
+frontend:
+  url: ${FRONTEND_URL:http://localhost:5173}
+
+jwt:
+  secret: ${JWT_SECRET}
