@@ -26,7 +26,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     /// Generate and save refresh token into database.
     /// Generate new refresh token
     @Override
-    public RefreshToken generate(User user, HttpServletRequest request) {
+    public RefreshToken generateAndSave(User user, HttpServletRequest request) {
         RefreshToken token = new RefreshToken();
         token.setUser(user);
         token.setToken(UUID.randomUUID().toString());

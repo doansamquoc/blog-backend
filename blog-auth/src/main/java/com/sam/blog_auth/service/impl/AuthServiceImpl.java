@@ -36,7 +36,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -113,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
         User user = authenticate(request);
 
         String accessToken = generateAccessToken(user);
-        RefreshToken refreshToken = refreshTokenService.generate(user, servletRequest);
+        RefreshToken refreshToken = refreshTokenService.generateAndSave(user, servletRequest);
 
         // Create cookie and add to header
         ResponseCookie refreshCookie = cookieUtils.createRefreshTokenCookie(refreshToken.getToken());
@@ -169,7 +168,7 @@ public class AuthServiceImpl implements AuthService {
         // Generate new access token
         String newAccessToken = generateAccessToken(user);
         // Generate new refresh token
-        RefreshToken newRefreshToken = refreshTokenService.generate(user, request);
+        RefreshToken newRefreshToken = refreshTokenService.generateAndSave(user, request);
 
         // Set refresh token into cookie
         ResponseCookie refreshCookie = cookieUtils.createRefreshTokenCookie(newRefreshToken.getToken());

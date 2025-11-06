@@ -5,7 +5,7 @@ import com.sam.blog_user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface RefreshTokenService {
-    RefreshToken generate(User user, HttpServletRequest request);
+    RefreshToken generateAndSave(User user, HttpServletRequest request);
 
     RefreshToken verifyExpiration(RefreshToken token);
 
