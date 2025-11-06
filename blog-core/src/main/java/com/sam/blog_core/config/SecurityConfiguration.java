@@ -4,6 +4,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,9 +27,8 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfiguration {
-
-    private String secretKeyString = "this_is_secret_key_too_long_long_long";
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    SecretKey secretKey;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,12 +40,12 @@ public class SecurityConfiguration {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) ->
-                auth.requestMatchers("/api/auth/**").permitAll()
+                auth.requestMatchers("/api/auth/**", "/api/password-reset/**").permitAll()
                         .anyRequest()
                         .authenticated()
         );
         http.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt.decoder(jwtDecoder(secretKey())))
+                .jwt(jwt -> jwt.decoder(jwtDecoder(secretKey)))
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
         );
 
@@ -68,10 +68,5 @@ public class SecurityConfiguration {
     @Bean
     public JwtDecoder jwtDecoder(SecretKey secretKey) {
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
-    }
-
-    @Bean
-    public SecretKey secretKey() {
-        return Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
 }

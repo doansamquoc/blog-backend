@@ -1,5 +1,6 @@
 package com.sam.blog_core.utils;
 
+import com.sam.blog_core.exception.BusinessException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -12,5 +12,4 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
     UserResponse toUserResponse(User user);
     User toUserUpdateRequest(UserUpdateRequest request, @MappingTarget User user);
-    User toForgetPasswordRequest(ForgetPasswordRequest request);
 }

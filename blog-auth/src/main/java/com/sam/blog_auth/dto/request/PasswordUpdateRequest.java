@@ -1,4 +1,4 @@
-package com.sam.blog_user.dto.request;
+package com.sam.blog_auth.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdatePasswordRequest {
+public class PasswordUpdateRequest {
     String oldPassword;
     String newPassword;
 }

@@ -6,7 +6,14 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface RefreshTokenService {
     RefreshToken generate(User user, HttpServletRequest request);
+
     RefreshToken verifyExpiration(RefreshToken token);
-    void revoke(String token);
+
+    void revokeAndSave(String token);
+
+    void revokeAndSave(RefreshToken refreshToken);
+
     void revokeAllByUser(User user);
+
+    RefreshToken findByToken(String refreshTokenValue);
 }

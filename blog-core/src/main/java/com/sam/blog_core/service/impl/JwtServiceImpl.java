@@ -1,27 +1,25 @@
 package com.sam.blog_core.service.impl;
 
-import com.sam.blog_core.enums.Role;
 import com.sam.blog_core.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
 @Slf4j
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
-    String SECRET_KEY = "this_is_secret_key_too_long_long_long";
-    SecretKey KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    SecretKey secretKey;
 
     @Override
     public String generate(Map<String, Object> claims, String subject) {
@@ -33,13 +31,13 @@ public class JwtServiceImpl implements JwtService {
                 .subject(subject)
                 .issuedAt(now)
                 .expiration(expiration)
-                .signWith(KEY)
+                .signWith(secretKey)
                 .compact();
     }
 
     @Override
     public Claims parse(String token) {
-        return Jwts.parser().verifyWith(KEY).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
 
     @Override

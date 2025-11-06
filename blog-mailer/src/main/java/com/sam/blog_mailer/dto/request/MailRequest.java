@@ -11,5 +11,6 @@ import lombok.experimental.FieldDefaults;
 public class MailRequest {
     String to;
     String subject;
+    String token;
     String text;
 }

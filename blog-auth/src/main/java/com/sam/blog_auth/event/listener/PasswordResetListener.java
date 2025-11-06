@@ -1,8 +1,9 @@
-package com.sam.blog_user.event.listener;
+package com.sam.blog_auth.event.listener;
 
+import com.sam.blog_auth.event.PasswordChangedEvent;
+import com.sam.blog_auth.event.PasswordResetEvent;
 import com.sam.blog_mailer.dto.request.MailRequest;
 import com.sam.blog_mailer.service.MailService;
-import com.sam.blog_user.event.PasswordChangedEvent;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,17 +14,16 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class PasswordChangedListener {
+public class PasswordResetListener {
     MailService mailService;
 
     @Async
     @EventListener
-    public void handlePasswordListener(PasswordChangedEvent event) {
-        MailRequest mailRequest = new MailRequest();
-        mailRequest.setTo(event.getUserEmail());
-        mailRequest.setSubject("UPDATE PASSWORD");
-        mailRequest.setText("Your password has been changed!");
-
-        mailService.sendHTMLMail(mailRequest, event.getRequest());
+    public void handlePasswordResetListener(PasswordResetEvent event) {
+        MailRequest mailRequest = MailRequest.builder()
+                .to(event.getUserEmail())
+                .token(event.getToken())
+                .build();
+        mailService.sendPasswordResetMail(mailRequest, event.getRequest());
     }
 }

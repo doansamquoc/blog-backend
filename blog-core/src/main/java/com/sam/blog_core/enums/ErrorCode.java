@@ -23,7 +23,7 @@ public enum ErrorCode {
 
     INVALID_EMAIL_ADDRESS(HttpStatus.BAD_REQUEST, "Invalid email address"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "The password must have at least 8 characters"),
-    INVALID_USERNAME(HttpStatus.BAD_REQUEST,"Username must be between 4 and 16 characters"),
+    INVALID_USERNAME(HttpStatus.BAD_REQUEST, "Username must be between 4 and 16 characters"),
     INVALID_FIRST_NAME(HttpStatus.BAD_REQUEST, "First name must be between 4 and 54 characters"),
     INVALID_LAST_NAME(HttpStatus.BAD_REQUEST, "Last name must be between 4 and 54 characters"),
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "Gender cannot be left blank"),
@@ -37,8 +37,10 @@ public enum ErrorCode {
 
     SEND_MAIL_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "Send mail error"),
 
+    PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "The passwords do not match"),
+    TOKEN_USED(HttpStatus.UNAUTHORIZED, "Token is used, please request new."),
+    TOKEN_REVOKED(HttpStatus.UNAUTHORIZED, "Token has been revoked");
 
-    PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "The passwords do not match");
     HttpStatus status;
     String message;
 }

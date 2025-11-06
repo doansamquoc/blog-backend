@@ -1,6 +1,7 @@
-package com.sam.blog_user.entity;
+package com.sam.blog_auth.entity;
 
 import com.sam.blog_core.entity.BaseEntity;
+import com.sam.blog_user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
