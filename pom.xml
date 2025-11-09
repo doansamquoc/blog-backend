@@ -31,6 +31,7 @@
         <module>blog-user</module>
         <module>blog-auth</module>
         <module>blog-mailer</module>
+        <module>blog_post</module>
     </modules>
 
     <build>
