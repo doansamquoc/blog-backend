@@ -1,15 +1,14 @@
 package com.sam.blog_user.service.impl;
 
-import com.sam.blog_core.service.JwtService;
 import com.sam.blog_core.enums.ErrorCode;
 import com.sam.blog_core.exception.BusinessException;
+import com.sam.blog_user.dto.request.UserDeleteRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
 import com.sam.blog_user.entity.User;
 import com.sam.blog_user.mapper.UserMapper;
 import com.sam.blog_user.repository.UserRepository;
 import com.sam.blog_user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
-
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,39 +26,28 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
-    JwtService jwtService;
 
     @Override
-    public UserResponse me() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            Jwt jwt = (Jwt) auth.getPrincipal();
-            User user = userRepository.findByUsername(jwt.getSubject()).orElseThrow(
-                    () -> new BusinessException(ErrorCode.USER_NOT_FOUND)
-            );
-            return userMapper.toUserResponse(user);
-        }
-        throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
+    public UserResponse me(String username) {
+        User user = findUserByUsername(username);
+        return userMapper.toUserResponse(user);
     }
 
     @Override
-    public User authenticatedUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            Jwt jwt = (Jwt) auth.getPrincipal();
-            return userRepository.findByUsername(jwt.getSubject()).orElseThrow(
-                    () -> new BusinessException(ErrorCode.USER_NOT_FOUND)
-            );
-        }
-        throw new BusinessException(ErrorCode.USER_NOT_LOGGED_IN);
-    }
-
-    @Override
-    public UserResponse updateById(Long id, UserUpdateRequest r, HttpServletRequest request) {
-        User user = userRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-        user = userMapper.toUserUpdateRequest(r, user);
+    public UserResponse update(String username, UserUpdateRequest request) {
+        User user = findUserByUsername(username);
+        user = userMapper.updateUserFromRequest(request, user);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public void delete(String username, UserDeleteRequest request) {
+        User user = findUserByUsername(username);
+        if (!passwordEncoder.matches(request.getPassword(), user.getHashedPassword())) {
+            throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
+        }
+        userRepository.delete(user);
     }
 
     @Override
@@ -76,8 +63,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override

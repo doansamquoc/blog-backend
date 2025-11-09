@@ -16,12 +16,15 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -70,7 +73,7 @@ public class AuthController {
 
     @PostMapping("/password-reset")
     public ResponseEntity<ApiResponse<Object>> requestPasswordReset(
-            @RequestBody RequestRestPasswordRequest request,
+            @RequestBody @Valid RequestRestPasswordRequest request,
             HttpServletRequest servletRequest
     ) {
         authService.requestResetPassword(request, servletRequest);
@@ -78,11 +81,15 @@ public class AuthController {
     }
 
     @GetMapping("/password-reset/verify")
-    public void verifyPasswordResetToken(@RequestParam("token") String token, HttpServletResponse servletResponse) throws IOException {
+    public void verifyPasswordResetToken(
+            @RequestParam("token") String token,
+            HttpServletResponse servletResponse
+    ) throws IOException {
         try {
             passwordResetTokenService.verifyPasswordResetToken(token);
             servletResponse.sendRedirect(frontendUrl + "/password-reset?token=" + token);
-        } catch (IOException exception) {
+        } catch (BadRequestException exception) {
+            log.warn("Invalid password reset token processed: {}", exception.getMessage());
             servletResponse.sendRedirect(frontendUrl + "/password-reset/invalid");
         }
     }
@@ -105,5 +112,4 @@ public class AuthController {
         authService.updatePassword(request, servletRequest);
         return ApiResponseFactory.success("Your password has been changed.");
     }
-
 }

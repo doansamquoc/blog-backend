@@ -1,22 +1,22 @@
 package com.sam.blog_user.service;
 
+import com.sam.blog_user.dto.request.UserDeleteRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
 import com.sam.blog_user.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
-    UserResponse me();
+    UserResponse me(String username);
 
-    User authenticatedUser();
+    UserResponse update(String username, UserUpdateRequest request);
 
-    UserResponse updateById(Long id, UserUpdateRequest r, HttpServletRequest request);
+    void delete(String username, UserDeleteRequest request);
 
     User findUserByEmail(String email);
 
     User findUserByUsername(String username);
 
-    User save(User user);
+    void save(User user);
 
     boolean existsByUsername(String username);
 
