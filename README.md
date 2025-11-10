@@ -15,4 +15,4 @@
 ```
 https://github.com/doansamquoc/blog-backend.git
 ```
-2. Read the ```.env.example``` to setup environment
+2. Read the ```.env.example``` to set up environment

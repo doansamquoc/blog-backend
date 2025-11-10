@@ -11,8 +11,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>blog-mailer</artifactId>
-    <name>blog-mailer</name>
+    <artifactId>blog-post</artifactId>
+    <name>blog-post</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
@@ -24,7 +24,7 @@
         <!-- Inherit -->
         <dependency>
             <groupId>com.sam</groupId>
-            <artifactId>blog-core</artifactId>
+            <artifactId>blog-user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
