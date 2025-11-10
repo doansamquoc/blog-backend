@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponse me(String username) {
+    public UserResponse getUserByUsername(String username) {
         User user = findUserByUsername(username);
         return userMapper.toUserResponse(user);
     }

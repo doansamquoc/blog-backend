@@ -39,7 +39,8 @@ public enum ErrorCode {
 
     PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "The passwords do not match"),
     TOKEN_USED(HttpStatus.UNAUTHORIZED, "Token is used, please request new."),
-    TOKEN_REVOKED(HttpStatus.UNAUTHORIZED, "Token has been revoked");
+    TOKEN_REVOKED(HttpStatus.UNAUTHORIZED, "Token has been revoked"),
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not found");
 
     HttpStatus status;
     String message;

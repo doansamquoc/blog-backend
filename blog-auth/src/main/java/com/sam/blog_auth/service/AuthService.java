@@ -18,7 +18,7 @@ public interface AuthService {
 
     AuthResponse refresh(HttpServletRequest request, HttpServletResponse response);
 
-    void updatePassword(PasswordUpdateRequest r, HttpServletRequest request);
+    void updatePassword(String username, PasswordUpdateRequest r, HttpServletRequest request);
 
     void requestResetPassword(RequestRestPasswordRequest r, HttpServletRequest request);
 

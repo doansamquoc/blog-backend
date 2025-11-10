@@ -6,7 +6,7 @@ import com.sam.blog_user.dto.response.UserResponse;
 import com.sam.blog_user.entity.User;
 
 public interface UserService {
-    UserResponse me(String username);
+    UserResponse getUserByUsername(String username);
 
     UserResponse update(String username, UserUpdateRequest request);
 

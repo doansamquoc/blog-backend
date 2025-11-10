@@ -188,8 +188,8 @@ public class AuthServiceImpl implements AuthService {
         passwordResetTokenService.save(passwordResetToken);
     }
     @Override
-    public void updatePassword(PasswordUpdateRequest r, HttpServletRequest servletRequest) {
-        User user = userService.authenticatedUser();
+    public void updatePassword(String username, PasswordUpdateRequest r, HttpServletRequest servletRequest) {
+        User user = userService.findUserByUsername(username);
 
         // If password do not match throw an error
         if (!passwordEncoder.matches(r.getOldPassword(), user.getHashedPassword()))

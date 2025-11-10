@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -106,10 +108,11 @@ public class AuthController {
 
     @PostMapping("/password-update")
     public ResponseEntity<ApiResponse<String>> updatePassword(
+            @AuthenticationPrincipal Jwt jwt,
             @RequestBody PasswordUpdateRequest request,
             HttpServletRequest servletRequest
     ) {
-        authService.updatePassword(request, servletRequest);
+        authService.updatePassword(jwt.getSubject(), request, servletRequest);
         return ApiResponseFactory.success("Your password has been changed.");
     }
 }
