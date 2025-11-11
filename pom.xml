@@ -33,6 +33,10 @@
         <module>blog-mailer</module>
         <module>blog-post</module>
         <module>blog-comment</module>
+        <module>blog-like</module>
+        <module>blog-share</module>
+        <module>blog-notification</module>
+        <module>blog-message</module>
     </modules>
 
     <build>

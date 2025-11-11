@@ -12,7 +12,8 @@ import java.time.Instant;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentResponse {
     Long id;
-    Long authorId;
+    Long commenterId;
+    Long postId;
     String content;
     Instant createdAt;
     Instant updatedAt;

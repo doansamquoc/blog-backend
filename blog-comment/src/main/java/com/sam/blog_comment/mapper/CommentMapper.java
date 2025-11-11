@@ -11,11 +11,15 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentMapper {
-    @Mapping(target = "authorId", source = "author.id")
+    @Mapping(target = "commenterId", source = "commenter.id")
     @Mapping(target = "postId", source = "post.id")
     CommentResponse toCommentResponse(Comment comment);
 
+    @Mapping(target = "commenter", ignore = true)
+    @Mapping(target = "post", ignore = true)
     Comment createCommentFromRequest(CommentCreationRequest request);
 
+    @Mapping(target = "commenter", ignore = true)
+    @Mapping(target = "post", ignore = true)
     Comment updateCommentFromRequest(CommentUpdateRequest request, @MappingTarget Comment comment);
 }
