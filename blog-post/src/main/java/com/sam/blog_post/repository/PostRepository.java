@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByCreator(User user);
-    Optional<Post> findByIdAndCreator(Long id, User user);
+    List<Post> findByAuthor(User user);
+    Optional<Post> findByIdAndAuthor(Long id, User user);
 }

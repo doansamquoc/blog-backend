@@ -16,8 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id", nullable = false)
-    User creator;
+    @JoinColumn(name = "author_id", nullable = false)
+    User author;
 
     @Column(name = "caption")
     String caption;

@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     public PostResponse create(String username, PostCreationRequest request) {
         User user = userService.findUserByUsername(username);
         Post post = mapper.createPostFromRequest(request);
-        post.setCreator(user);
+        post.setAuthor(user);
         Post postSaved = repository.save(post);
 
         return mapper.toPostResponse(postSaved);
@@ -76,7 +76,7 @@ public class PostServiceImpl implements PostService {
 
     public Post findByIdAndUsername(Long id, String username) {
         User user = userService.findUserByUsername(username);
-        return repository.findByIdAndCreator(id, user).orElseThrow(
+        return repository.findByIdAndAuthor(id, user).orElseThrow(
                 () -> new BusinessException(ErrorCode.POST_NOT_FOUND)
         );
     }

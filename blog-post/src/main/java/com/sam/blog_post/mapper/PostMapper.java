@@ -11,7 +11,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostMapper {
-    @Mapping(target = "creatorId", source = "creator.id")
+    @Mapping(target = "authorId", source = "author.id")
     PostResponse toPostResponse(Post post);
     Post createPostFromRequest(PostCreationRequest request);
     Post updatePostFromRequest(PostUpdateRequest request, @MappingTarget Post post);

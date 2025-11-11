@@ -1,20 +1,19 @@
-package com.sam.blog_post.dto.response;
+package com.sam.blog_comment.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.apache.catalina.User;
 
 import java.time.Instant;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostResponse {
+public class CommentResponse {
     Long id;
     Long authorId;
-    String caption;
+    String content;
     Instant createdAt;
     Instant updatedAt;
 }

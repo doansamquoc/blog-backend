@@ -3,9 +3,7 @@ package com.sam.blog_user.entity;
 import com.sam.blog_core.entity.BaseEntity;
 import com.sam.blog_core.enums.Gender;
 import com.sam.blog_core.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,25 +63,5 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public String getPassword() {
         return hashedPassword;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

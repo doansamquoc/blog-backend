@@ -4,6 +4,7 @@ import com.sam.blog_post.dto.request.PostCreationRequest;
 import com.sam.blog_post.dto.request.PostUpdateRequest;
 import com.sam.blog_post.dto.response.PageResponse;
 import com.sam.blog_post.dto.response.PostResponse;
+import com.sam.blog_post.entity.Post;
 
 public interface PostService {
     PostResponse create(String username, PostCreationRequest request);
@@ -14,6 +15,7 @@ public interface PostService {
 
     void deleteById(String username, Long id);
 
-
     PostResponse updateByIdAndUsername(Long id, String username, PostUpdateRequest request);
+
+    Post findById(Long id);
 }
