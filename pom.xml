@@ -31,9 +31,16 @@
         <module>blog-user</module>
         <module>blog-auth</module>
         <module>blog-mailer</module>
-        <module>blog-post</module>
-        <module>blog-comment</module>
-        <module>blog-like</module>
+
+        <module>post/post-impl</module>
+        <module>post/post-api</module>
+
+        <module>comment/comment-impl</module>
+        <module>comment/comment-api</module>
+
+        <module>like/like-api</module>
+        <module>like/like-impl</module>
+
         <module>blog-share</module>
         <module>blog-notification</module>
         <module>blog-message</module>

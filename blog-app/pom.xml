@@ -39,16 +39,46 @@
             <artifactId>blog-mailer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <!-- POST -->
         <dependency>
             <groupId>com.sam</groupId>
-            <artifactId>blog-post</artifactId>
+            <artifactId>post-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sam</groupId>
+            <artifactId>post-impl</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- COMMENT -->
+        <dependency>
+            <groupId>com.sam</groupId>
+            <artifactId>comment-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sam</groupId>
+            <artifactId>comment-impl</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- LIKE -->
+        <dependency>
+            <groupId>com.sam</groupId>
+            <artifactId>like-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sam</groupId>
+            <artifactId>like-impl</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.sam</groupId>
-            <artifactId>blog-like</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency><dependency>
             <groupId>com.sam</groupId>
             <artifactId>blog-share</artifactId>
             <version>0.0.1-SNAPSHOT</version>

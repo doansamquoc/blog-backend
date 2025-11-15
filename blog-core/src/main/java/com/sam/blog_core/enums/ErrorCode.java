@@ -41,7 +41,8 @@ public enum ErrorCode {
     TOKEN_USED(HttpStatus.UNAUTHORIZED, "Token is used, please request new."),
     TOKEN_REVOKED(HttpStatus.UNAUTHORIZED, "Token has been revoked"),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "Post not found"),
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found");
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "Comment not found"),
+    LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "You do not interacted this post");
 
     HttpStatus status;
     String message;
