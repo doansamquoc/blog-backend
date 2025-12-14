@@ -36,34 +36,27 @@ public class CookieUtils {
 
     public ResponseCookie createCookie(String name, String value, long maxAge, String path) {
         return ResponseCookie.from(name, value)
-                .httpOnly(false)
-                .secure(true)
+                .httpOnly(true)
+                .secure(false)
                 .path(path)
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(maxAge)
                 .build();
-    }
-
-    // Expiration divided by 1000 because JWT expiration usually takes milliseconds but Cookies do not
-    public ResponseCookie createAccessTokenCookie(String value) {
-        // 15 minutes
-        long accessTokenExpiration = 15 * 60 * 1000;
-        return createCookie("accessToken", value, accessTokenExpiration / 1000, "/");
     }
 
     // Expiration divided by 1000 because JWT expiration usually takes milliseconds but Cookies do not
     public ResponseCookie createRefreshTokenCookie(String value) {
         // 15 days
         long refreshTokenExpiration = 15 * 24 * 60 * 60 * 1000;
-        return createCookie("refreshToken", value, refreshTokenExpiration / 1000, "/api/auth");
+        return createCookie("refreshToken", value, refreshTokenExpiration / 1000, "/");
     }
 
     public ResponseCookie deleteCookie(String name, String path) {
         return ResponseCookie.from(name)
-                .httpOnly(false)
-                .secure(true)
+                .httpOnly(true)
+                .secure(false)
                 .path(path)
-                .sameSite("None")
+                .sameSite("Lax")
                 .maxAge(0)
                 .build();
     }

@@ -23,9 +23,9 @@ public enum ErrorCode {
 
     INVALID_EMAIL_ADDRESS(HttpStatus.BAD_REQUEST, "Invalid email address"),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "The password must have at least 8 characters"),
-    INVALID_USERNAME(HttpStatus.BAD_REQUEST, "Username must be between 4 and 16 characters"),
-    INVALID_FIRST_NAME(HttpStatus.BAD_REQUEST, "First name must be between 4 and 54 characters"),
-    INVALID_LAST_NAME(HttpStatus.BAD_REQUEST, "Last name must be between 4 and 54 characters"),
+    INVALID_USERNAME(HttpStatus.BAD_REQUEST, "Username must be between 3 and 16 characters"),
+    INVALID_FIRST_NAME(HttpStatus.BAD_REQUEST, "First name must be between 2 and 54 characters"),
+    INVALID_LAST_NAME(HttpStatus.BAD_REQUEST, "Last name must be between 2 and 54 characters"),
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "Gender cannot be left blank"),
     INVALID_ROLE(HttpStatus.BAD_REQUEST, "Role cannot be left blank"),
 

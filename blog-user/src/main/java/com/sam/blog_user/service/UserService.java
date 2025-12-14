@@ -1,9 +1,12 @@
 package com.sam.blog_user.service;
 
+import com.sam.blog_user.dto.request.CheckEmailAddressRequest;
+import com.sam.blog_user.dto.request.CheckUsernameRequest;
 import com.sam.blog_user.dto.request.UserDeleteRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
 import com.sam.blog_user.entity.User;
+import org.springframework.http.HttpStatus;
 
 public interface UserService {
     UserResponse getUserByUsername(String username);
@@ -13,6 +16,10 @@ public interface UserService {
     void delete(String username, UserDeleteRequest request);
 
     User findUserByEmail(String email);
+
+    HttpStatus checkUsername(CheckUsernameRequest request);
+
+    HttpStatus checkEmail(CheckEmailAddressRequest request);
 
     User findUserByUsername(String username);
 

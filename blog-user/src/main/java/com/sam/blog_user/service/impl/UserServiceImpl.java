@@ -2,6 +2,8 @@ package com.sam.blog_user.service.impl;
 
 import com.sam.blog_core.enums.ErrorCode;
 import com.sam.blog_core.exception.BusinessException;
+import com.sam.blog_user.dto.request.CheckEmailAddressRequest;
+import com.sam.blog_user.dto.request.CheckUsernameRequest;
 import com.sam.blog_user.dto.request.UserDeleteRequest;
 import com.sam.blog_user.dto.request.UserUpdateRequest;
 import com.sam.blog_user.dto.response.UserResponse;
@@ -9,14 +11,13 @@ import com.sam.blog_user.entity.User;
 import com.sam.blog_user.mapper.UserMapper;
 import com.sam.blog_user.repository.UserRepository;
 import com.sam.blog_user.service.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    EntityManager entityManager;
 
     @Override
     public UserResponse getUserByUsername(String username) {
@@ -54,6 +56,18 @@ public class UserServiceImpl implements UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmailAddress(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+
+    @Override
+    public HttpStatus checkUsername(CheckUsernameRequest request) {
+        boolean exists = existsByUsername(request.getUsername());
+        return exists ? HttpStatus.CONFLICT : HttpStatus.NO_CONTENT;
+    }
+
+    @Override
+    public HttpStatus checkEmail(CheckEmailAddressRequest request) {
+        return existsByEmailAddress(request.getEmailAddress()) ? HttpStatus.CONFLICT : HttpStatus.NO_CONTENT;
     }
 
     @Override

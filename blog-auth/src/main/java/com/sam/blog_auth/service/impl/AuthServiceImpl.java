@@ -39,6 +39,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -57,19 +59,49 @@ public class AuthServiceImpl implements AuthService {
 
     static int EXPIRATION_TIME_MS = 900_000;
 
+    private String generateUsername(String firstName, String lastName, LocalDate dob) {
+        String base = (firstName + lastName + dob.format(DateTimeFormatter.ofPattern("yyyyMMdd")))
+                .toLowerCase()
+                .replaceAll("[^a-z0-9]", "");
+
+        String username = base;
+        int counter = 1;
+
+        while (userService.existsByUsername(username)) {
+            username = base + counter;
+            counter++;
+        }
+
+        return username;
+    }
+
     @Override
-    public AuthResponse signUp(SignUpRequest request, HttpServletRequest servletRequest, HttpServletResponse response) {
+    public AuthResponse signUp(SignUpRequest request,
+                               HttpServletRequest servletRequest,
+                               HttpServletResponse response
+    ) {
+
         if (userService.existsByEmailAddress(request.getEmailAddress()))
             throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
-        if (userService.existsByUsername(request.getUsername()))
-            throw new BusinessException(ErrorCode.USERNAME_ALREADY_EXISTS);
+
+        String username = generateUsername(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getDateOfBirth()
+        );
 
         User user = buildNewUser(request);
+        user.setUsername(username);
+
         userService.save(user);
 
-        // Sign in to response access token and generate refresh token
-        return signIn(new SignInRequest(request.getUsername(), request.getPassword()), servletRequest, response);
+        return signIn(
+                new SignInRequest(username, request.getPassword()),
+                servletRequest,
+                response
+        );
     }
+
 
     private User buildNewUser(SignUpRequest request) {
         User user = authMapper.toSIgnUpRequest(request);

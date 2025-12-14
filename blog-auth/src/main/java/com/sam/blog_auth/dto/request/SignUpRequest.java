@@ -24,15 +24,15 @@ public class SignUpRequest {
     @Size(min = 8, message = "INVALID_PASSWORD")
     String password;
 
-    @NotBlank(message = "USERNAME_REQUIRED")
-    @Size(min = 4, max = 16, message = "INVALID_USERNAME")
-    String username;
+//    @NotBlank(message = "USERNAME_REQUIRED")
+//    @Size(min = 3, max = 16, message = "INVALID_USERNAME")
+//    String username;
 
     @NotBlank(message = "FIRST_NAME_REQUIRED")
-    @Size(min = 4, max = 54, message = "INVALID_FIRST_NAME")
+    @Size(min = 2, max = 54, message = "INVALID_FIRST_NAME")
     String firstName;
 
-    @Size(min = 4, max = 54, message = "INVALID_LAST_NAME")
+    @Size(min = 2, max = 54, message = "INVALID_LAST_NAME")
     String lastName;
 
     @NotNull(message = "DOB_REQUIRED")

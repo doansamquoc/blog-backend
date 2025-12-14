@@ -40,7 +40,12 @@ public class SecurityConfiguration {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) ->
-                auth.requestMatchers("/api/auth/**", "/api/password-reset/**").permitAll()
+                auth.requestMatchers(
+                                "/api/auth/**",
+                                "/api/password-reset/**",
+                                "/api/users/check-username",
+                                "/api/users/check-email"
+                        ).permitAll()
                         .anyRequest()
                         .authenticated()
         );
